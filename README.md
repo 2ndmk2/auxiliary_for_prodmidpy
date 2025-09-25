@@ -12,7 +12,6 @@ ALMA の Measurement Set (MS) から解析用の npz を作成し、ディスク
 
 ## Quick Start
 
-自分のmsファイル名、出力ファイル、円盤幾何へ変更すること
 
 ```bash
 # 1) MS → NPZ 変換（CASAを使う）
@@ -27,6 +26,7 @@ python correct_weight_ms.py
 python compute_bias_weight.py
 
 ## Tips
-`average_ms.py`を用いて、msをaveragingしてサイズを下げると解析がやりやすい。
+- 自分のmsファイル名、出力ファイル、円盤幾何へ変更すること
+- `average_ms.py`を用いて、msをaveragingしてサイズを下げると解析がやりやすい。
 
 

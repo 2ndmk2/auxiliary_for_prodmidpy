@@ -10,7 +10,7 @@ ALMA の Measurement Set (MS) から解析用の npz を作成し、ディスク
 ---
 
 
-## Quick Start（最短手順）
+## Quick Start
 
 自分のmsファイル名、出力ファイル、円盤幾何へ変更すること
 

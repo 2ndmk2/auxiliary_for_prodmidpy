@@ -1,6 +1,6 @@
 # ms_weight_correct
 
-ALMA の Measurement Set (MS) から解析用の npz を作成し、ディスク幾何を用いて WEIGHT のバイアスを推定・補正するためのコード。
+ALMA の Measurement Set (MS) からnpz を作成し、円盤の幾何を用いて WEIGHT のバイアスを推定・補正するためのコード。
 
 * `ms_to_npz.py` — Measurement Set を npz に変換する。`protomidpy` の入力にも使用可能。
 * `correct_weight_ms.py` — ディスク幾何（例: 位置角、傾斜、中心）を用いて軸対称性を仮定し重みのバイアスを推定する。

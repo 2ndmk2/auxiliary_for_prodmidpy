@@ -11,6 +11,8 @@ ALMA の Measurement Set (MS) から解析用の npz を作成し、ディスク
 
 ## Quick Start（最短手順）
 
+自分のmsファイル名、出力ファイル、円盤幾何へ変更すること
+
 ```bash
 # 1) MS → NPZ 変換（CASAを使う）
 casa  -c ms_to_npz.py

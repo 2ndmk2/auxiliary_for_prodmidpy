@@ -1,15 +1,20 @@
 import shutil
 import os
 
-msfile = './averaged/AS209_continuum_averaged.ms' # 元のMS
-new_ms = './averaged/AS209_continuum_averaged_corrected.ms' # 元のMS
+# Your ms file
+msfile = './averaged/AS209_continuum_averaged.ms'
+#corrected ms file to be made
+new_ms = './averaged/AS209_continuum_averaged_corrected.ms'
 
 if not os.path.exists(new_ms):
     shutil.copytree(msfile, new_ms)
     print(f"Copied to {new_ms}")
 
+# Set your value (from compute_bias_weight.py)
 weight_bias =  3.4206
-tb.open(new_ms, nomodify=False)     # 書き込み可能で開く
+
+# Modify weight ' sigma
+tb.open(new_ms, nomodify=False)     
 weights = tb.getcol('WEIGHT')
 sigmas  = tb.getcol('SIGMA')
 tb.putcol('WEIGHT', weights / weight_bias )

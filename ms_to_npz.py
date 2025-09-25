@@ -72,8 +72,8 @@ def load_ms(ms_file):
             data_weighted = data_weight_sum[valid]/weight_sum[valid]
 
             # Add data to list
-            u_list.extend(np.ravel(u_lambda[valid]))
-            v_list.extend(np.ravel(v_lambda[valid]))
+            u_list.extend(np.ravel(-u_lambda[valid])) ## - is need to match real observation
+            v_list.extend(np.ravel(-v_lambda[valid])) ## - is need to match real observation
             vis_list.extend(np.ravel(data_weighted))
             weights_list.extend(np.ravel(weight_sum[valid]))
             freq_list.extend(np.ravel(spw_freqs_map[valid]))
@@ -87,16 +87,17 @@ def load_ms(ms_file):
     return u_list, v_list, vis_list, weights_list, freq_list
 
 
-#msfile = "./raw/AS209_continuum.ms"
-#outfile ="./out.npz"
+# Your ms file
 msfile ="./averaged/AS209_continuum_averaged_corrected.ms"
+# Output npz file
 outfile ="./averaged_npz/AS209_continuum_averaged_corrected.vis.npz"
 
+# Main
 u_list, v_list, vis_list, weights_list, freq_list = load_ms(msfile )
-print(np.shape(u_list), np.shape(vis_list))
 
+# Save to npz
 ## "-" is needed to match true (u,v)
-np.savez(outfile , u_obs = - np.array(u_list), v_obs = - np.array(v_list), \
+np.savez(outfile , u_obs =  np.array(u_list), v_obs = np.array(v_list), \
     vis_obs = vis_list, freq_obs= freq_list, wgt_obs = weights_list)
     
     

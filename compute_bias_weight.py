@@ -140,18 +140,29 @@ def compute_sigma_bias(visfile, dx_arcsec, dy_arcsec, cosi, pa, q_min=100, n_gri
 
 if __name__ == '__main__':
 	plot = False
-	visfile ="./averaged_npz/AS209_continuum_averaged_corrected.vis.npz"
-	dx_arcsec, dy_arcsec, cosi, pa = 1.9* ARCSEC_TO_RAD * 0.001,-2.5* ARCSEC_TO_RAD * 0.001, np.cos(34.97 * np.pi/180.0),85.76 * np.pi/180.0
-	q_bin, vis_bin, vis_model_bin, q_sigma_grid, sigma_factor_grid, sigma_factor_grid_i = compute_sigma_bias(visfile, dx_arcsec, dy_arcsec, cosi, pa, q_min=100, n_grid=1000)
 
-	#print(np.median(sigma_factor_grid), np.median( sigma_factor_grid_i))
-	#print(np.median(sigma_factor_grid)**2, np.median( sigma_factor_grid_i)**2)
+    # Your visibility file (output from ms_to_npz.py)
+	visfile ="./averaged_npz/AS209_continuum_averaged_corrected.vis.npz" 
 
-	# Weights in data (measurement set) should be divided by the following factor: 
+    # Put your geometry:
+    # dx_arcsec, dy_arcsec = disk centers (RA, Dec) in arcsec
+    # cosi = cosine of inclination
+    # pa (in unit of radian)
+	dx_arcsec, dy_arcsec, cosi, pa = 1.9 * 0.001,-2.5* ARCSEC_TO_RAD * 0.001, np.cos(34.97 * np.pi/180.0),85.76 * np.pi/180.0
 
+    # Main
+	q_bin, vis_bin, vis_model_bin, q_sigma_grid, sigma_factor_grid, sigma_factor_grid_i = compute_sigma_bias(visfile, dx_arcsec* ARCSEC_TO_RAD, dy_arcsec* ARCSEC_TO_RAD, cosi, pa, q_min=100, n_grid=1000)
+
+	# Weight bias
 	weight_factor = np.median(sigma_factor_grid)**2  ## only real part but may use imaginary part
 
 	print(" Weights in data (measurement set) should be divided by: %.4f" % weight_factor)
+
+    # Can also check biases
+	#print(np.median(sigma_factor_grid), np.median( sigma_factor_grid_i))
+	#print(np.median(sigma_factor_grid)**2, np.median( sigma_factor_grid_i)**2)
+
+
 
 	# plot 
 	if plot:

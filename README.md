@@ -1,4 +1,4 @@
-# ms_weight_correct
+# auxiliary for protomidpy
 
 ALMA の Measurement Set (MS) からnpz を作成し、円盤の幾何を用いて WEIGHT のバイアスを推定・補正するためのコード。
 

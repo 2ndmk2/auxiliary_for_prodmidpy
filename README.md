@@ -45,7 +45,7 @@ casa -c make_residual_ms.py　(ターミナルでCASAを開かず打つ）
 #### Arguments
 
 - modelfile:  
-  protomidpy の model file へのパス（`model_calc` で作成される `model.npz`）
+  protomidpy の model file へのパス（`model_calc.py` で作成される `model.npz`）
 
 - msfile:  
   protomidpy で解析した元の Measurement Set へのパス

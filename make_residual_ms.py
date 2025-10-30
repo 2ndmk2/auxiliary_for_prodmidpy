@@ -4,6 +4,7 @@ import os
 import sys
 import glob
 import shutil
+import pickle 
 
 def put_res_vis_ms(msfile, model):
 
@@ -13,6 +14,48 @@ def put_res_vis_ms(msfile, model):
 	data_new = np.array([ [data[0,0,:] - model],  [data[1,0,:] - model]])
 	tb.putcol("DATA", data_new )
 	tb.close()
+
+def unpack_ragged(data, lengths):
+    if len(lengths) == 0:
+        return []
+    split_idx = np.cumsum(lengths)[:-1]
+    return np.split(data, split_idx)
+
+def put_res_from_protomidpy(ms_file, models):
+
+	tb = casatools.table()
+
+	count = 0
+	# Get frequencies for channel & spw 
+
+
+	# spw info
+	tb.open(ms_file + '/DATA_DESCRIPTION')
+	spw_id = tb.getcol('SPECTRAL_WINDOW_ID')
+	tb.close()
+
+	tb.open(ms_file, nomodify=False)
+
+	# Processing for each SPW
+
+	for desc_id in range(len(spw_id)):
+
+		## get data for current spw
+		subtb = tb.query(f'DATA_DESC_ID=={desc_id}')
+		
+		if subtb.nrows() > 0:
+			# load
+			model_now = np.array(models[count])
+			data_spw = subtb.getcol('DATA')  # shape: (npol, nchan, nvis)
+			data_new = np.array([ [data_spw[0,0,:] - model_now],  [data_spw[1,0,:] - model_now]])
+			subtb.putcol("DATA", data_new )
+			count +=1
+		else:
+			print("No data")
+
+		subtb.close()  # close the subtb to avoid memory leak
+	tb.close()
+
 
 def deprojected(msfile, cosi, pa):
 
@@ -48,13 +91,14 @@ def put_real_vis_ms(msfile):
 	tb.close()
 
 if __name__ == '__main__':
-	
+	target_name = "IMLup"
 	## cos (dec). dec is in "rad" unit 
 	cos_dec = 0.968717 ## AS209
+	cos_dec = 0.786## IMLup
 
 	##  Input files
-	modelfile="./AS209_continuum_averagedmodel.npz"
-	msfile = "./averaged/AS209_continuum_averaged.ms"
+	modelfile="./result/mcmc/%s_continuum_averagedmodel.npz" % target_name
+	msfile = "./averaged/%s_continuum_averaged.ms" % target_name
 	cos_dec = 0.968717 ## cos (dec). dec is in "rad" unit. This value is for AS 209
 	
 
@@ -79,8 +123,11 @@ if __name__ == '__main__':
 	if os.path.exists(subfile):
 		shutil.rmtree(subfile,ignore_errors=True)
 	shutil.copytree(msfile, subfile)
-	vis_model = np.load(modelfile)["vis_model"]
-	put_res_vis_ms(subfile, vis_model)
+	vis_model = np.load(modelfile)
+	data = vis_model["vis_model_all"]
+	lengths = vis_model["lengths"]
+	vis_model_spw = unpack_ragged(data, lengths)
+	put_res_from_protomidpy(subfile, vis_model_spw)
 
 	###  Aligning phasecenter with disk center
 

@@ -49,9 +49,6 @@ python model_calc_spw.py
 
 # 3) MSからmodelを引く
 casa -c make_residual_ms.py　(ターミナルでCASAを開かず打つ）
-
-#### Arguments
-
 - modelfile:  
   protomidpy の model file へのパス（`model_calc.py` で作成される `model.npz`）
 
@@ -60,6 +57,7 @@ casa -c make_residual_ms.py　(ターミナルでCASAを開かず打つ）
 
 - cos_dec:  
   cos(declination)。declination は天体 (RA, Dec) の Dec をラジアン単位にしたもの
+
 ```
 ---
 

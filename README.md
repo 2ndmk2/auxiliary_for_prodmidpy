@@ -11,7 +11,7 @@ ALMA の Measurement Set (MS) からnpz を作成し、円盤の幾何を用い�
 
 ### Producing Residual Measurement set
 * `ms_to_npz_spw.py` — Measurement Setの(u,v)をspwごとの配列にして出力。residual計算に必須。
-* `mode_calc_spw.py` — protomidpyの結果から、モデルを計算。加えて、Meaurement setに対応するようにモデルを計算。
+* `mode_calc_spw.py` — protomidpyの結果からモデルを計算。加えて、Meaurement setに対応するようにモデルを計算。
 * `make_residual_ms.py` - protomidpyで作成したVisibilityのモデルをMeasurement Setのデータから引く。
 
 ---
